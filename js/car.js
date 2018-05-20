@@ -46,10 +46,11 @@ const carClass = {
 
           //collision detection
 
-          var point = this.shape.localToGlobal(feeler.x,feeler.y);
 
           var width = feelersWidth/feelersAmountX;
           var height = feelersHeight/feelersAmountY;
+
+          var point = this.shape.localToGlobal(feeler.x-width/2,feeler.y-height/2);
 
           var rect1 = {left:point.x, right: point.x + width,top:point.y, bottom:point.y+height};
 
