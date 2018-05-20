@@ -105,7 +105,12 @@ function setUpTest(testType){
     case(TEST_TYPE_STAY_ON_ROAD):
     var offset = 500;
     var angle = 45 + Math.random() * 30;
-    var car = addCar((canvas.width/2)-offset,(canvas.height/2)+offset,angle);//a litte skewed to the left
+    var x = (canvas.width/2)-offset;
+    var y = (canvas.height/2)+offset;
+    var car = addCar(x,y,angle);//a litte skewed to the left
+    car.initX = x;
+    car.initY = y;
+    car.initAngle = angle;
     car.network = setUpNetwork();
     var roadOffset = 600;
     addBlockLine(((canvas.width/2)-250)-roadOffset,(canvas.height/2)+roadOffset, 50, -blockSize,blockSize);

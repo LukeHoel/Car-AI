@@ -41,3 +41,10 @@ function stop(){
     car.gasOn = false;;
   });
 }
+function reset(){
+  cars.forEach(function(car){
+    car.shape.x = car.initX;
+    car.shape.y = car.initY;
+    car.setAngle(car.initAngle);
+  });
+}

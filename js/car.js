@@ -1,4 +1,7 @@
 const carClass = {
+  initX : 0,
+  initY : 0,
+  initAngle : 0,
   gasOn : false,
   vel : 0,
   shape : null, //the createjs shape
