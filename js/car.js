@@ -44,8 +44,9 @@ const carClass = {
     }
   },
   checkCollision: function(){
-
+    var inputs = [];
     for(var i = 0; i < this.feelers.length; i ++){
+      var inputsRow = [];
       for(var j = 0; j < this.feelers[i].length; j ++){
         var feeler = this.feelers[i][j];
         var collide = false;
@@ -75,8 +76,11 @@ const carClass = {
           var checker = (i % 2 == 0) ? (j % 2 == 0) : !(j % 2 == 0);
           feeler.graphics.beginFill(checker ? "cyan" : "blue").drawRect(0,0,feelersWidth / feelersAmountX, feelersHeight / feelersAmountY);
         }
+        inputsRow.push(collide?1:0);
       }
+      inputs.push(inputsRow);
     }
+    return inputs;
   },
   setAngle: function(angle){
     this.shape.rotation = angle;
@@ -92,7 +96,7 @@ var cars = [];
 var carWidth = 50;
 var carHeight = 100;
 var feelersAmountX = 10;
-var feelersAmountY = 10*1.3;
+var feelersAmountY = 13;
 var feelersWidth = 200;
 var feelersHeight = 300;
 var feelersAlpha = .2;
@@ -139,4 +143,5 @@ function addCar(x,y,angle){
 
   obj.setAngle(angle);
   cars.push(obj);
+  return car;
 }
