@@ -1,4 +1,5 @@
 const carClass = {
+  gasOn : false,
   vel : 0,
   shape : null, //the createjs shape
   feelers : [],
@@ -8,6 +9,13 @@ const carClass = {
     this.move();
   },
   move: function(){
+    if(this.gasOn)
+    {
+      this.start();
+    }
+    else{
+      this.stop();
+    }
     this.shape.x += Math.cos(toRadians(this.shape.rotation-90)) * this.vel;
     this.shape.y += Math.sin(toRadians(this.shape.rotation-90)) * this.vel;
   },
@@ -69,6 +77,14 @@ const carClass = {
         }
       }
     }
+  },
+  setAngle: function(angle){
+    this.shape.rotation = angle;
+    for(var i = 0; i < this.feelers.length; i ++){
+      for(var j = 0; j < this.feelers[i].length; j ++){
+        this.feelers[i][j].rotation = -angle;
+      }
+    }
   }
 }
 
@@ -85,7 +101,7 @@ var turnSpeed = 1;
 var accelRate = .1;
 var speedCap = 10;
 
-function addCar(x,y){
+function addCar(x,y,angle){
   var obj = Object.assign({}, carClass);
   var container = new createjs.Container();
   stage.addChild(container);
@@ -121,5 +137,6 @@ function addCar(x,y){
   body.graphics.beginFill("black").drawRect(-carWidth/2,-carHeight/2,carWidth,carHeight);
   container.addChild(body);
 
+  obj.setAngle(angle);
   cars.push(obj);
 }

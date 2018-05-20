@@ -4,8 +4,6 @@ var stage;
 function handleTick(){
   cars.forEach(function(car){
     //car.turnRight();
-    //car.start();
-    //car.stop();
     car.update();
   });
   stage.update();
@@ -22,7 +20,7 @@ function init() {
   stage = new createjs.Stage("canvas");
   addBlockLine(0,canvas.height, 100, -blockSize,blockSize);
   addBlockLine(500,canvas.height, 100, -blockSize,blockSize);
-  addCar(canvas.width/2,canvas.height/2);
+  addCar(canvas.width/2,canvas.height/2,45);
 
   //game loop reference
   createjs.Ticker.addEventListener("tick", handleTick);
@@ -33,11 +31,11 @@ function init() {
 
 function start(){
   cars.forEach(function(car){
-    car.start();
+    car.gasOn = true;
   });
 }
 function stop(){
   cars.forEach(function(car){
-    car.stop();
+    car.gasOn = false;;
   });
 }
