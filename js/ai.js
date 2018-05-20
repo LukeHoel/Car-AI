@@ -24,7 +24,7 @@ var trainingSteps = 10;
 function setUpNetwork(){
   var network = new synaptic.Architect.Perceptron(feelersAmountX*feelersAmountY, 10, 10, 4);
   var trainer = new synaptic.Trainer(network)
-  var roadOffset = 500
+  var roadOffset = 800
   addBlockLine(((canvas.width/2)-250)-roadOffset,(canvas.height/2)+roadOffset, 100, -blockSize,blockSize);
   addBlockLine(((canvas.width/2)+250)-roadOffset,(canvas.height/2)+roadOffset, 100, -blockSize,blockSize);
   //left side of road
@@ -56,7 +56,7 @@ function setUpTest(testType){
     case(TEST_TYPE_STAY_ON_ROAD):
     var car = addCar(canvas.width/2,canvas.height/2,30);//a litte skewed to the left
     car.network = setUpNetwork();
-    var roadOffset = 500
+    var roadOffset = 800
     addBlockLine(((canvas.width/2)-250)-roadOffset,(canvas.height/2)+roadOffset, 100, -blockSize,blockSize);
     addBlockLine(((canvas.width/2)+250)-roadOffset,(canvas.height/2)+roadOffset, 100, -blockSize,blockSize);
     cars.push(car);
