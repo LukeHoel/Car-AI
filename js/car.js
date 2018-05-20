@@ -4,19 +4,25 @@ const carClass = {
   feelers : [],
   network : null, //the neural network controlling the actions,
   update: function(){
-    this.goForward();
+    this.move();
   },
-  goForward: function(){
+  move: function(){
     this.shape.x += Math.cos(toRadians(this.shape.rotation-90)) * this.vel;
     this.shape.y += Math.sin(toRadians(this.shape.rotation-90)) * this.vel;
   },
-  faster: function(){
+  start: function(){
     if(this.vel < speedCap)
     this.vel += accelRate;
   },
-  slower: function(){
+  stop: function(){
     if(this.vel > 0)
     this.vel -= accelRate;
+  },
+  turnRight: function(){
+        this.shape.rotation += 1;
+  },
+  turnLeft: function(){
+        this.shape.rotation -= 1;
   }
 }
 

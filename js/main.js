@@ -3,8 +3,8 @@ var stage;
 
 function handleTick(){
   cars.forEach(function(car){
-    //car.shape.rotation += 1;
-    //car.faster();
+    car.turnRight();
+    car.start();
     //car.slower();
     car.update();
   })
