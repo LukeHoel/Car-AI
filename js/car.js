@@ -134,7 +134,7 @@ function addCar(x,y,angle){
   }
 
   var body = new createjs.Shape();
-  body.graphics.beginFill("black").drawRect(-carWidth/2,-carHeight/2,carWidth,carHeight);
+  body.graphics.beginFill("black").drawRect(-carWidth/2,-carHeight/2,carWidth,carHeight).beginFill("yellow").drawRect(-(carWidth/2)*.8,-(carHeight/2)*1.1,carWidth*.2,carHeight*.05).drawRect((carWidth/2)*.4,-(carHeight/2)*1.1,carWidth*.2,carHeight*.05);
   container.addChild(body);
 
   obj.setAngle(angle);
