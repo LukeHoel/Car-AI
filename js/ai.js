@@ -20,7 +20,7 @@ function addBlockLine(startX, startY, amount, rise, run){
     addBlock(x,y);
   }
 }
-var trainingSteps = 5;
+var trainingSteps = 10;
 function setUpNetwork(){
   var network = new synaptic.Architect.Perceptron(feelersAmountX*feelersAmountY, 10, 10, 4);
   var trainer = new synaptic.Trainer(network)
