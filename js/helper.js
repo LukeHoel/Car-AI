@@ -14,12 +14,20 @@ function toRadians (angle) {
 
 function isUndefined(myVar){
   if(myVar == undefined)
-    return true;
+  return true;
   return false;
 }
 function intersectRect(r1, r2) {
   return !(r2.left > r1.right ||
-           r2.right < r1.left ||
-           r2.top > r1.bottom ||
-           r2.bottom < r1.top);
-}
+    r2.right < r1.left ||
+    r2.top > r1.bottom ||
+    r2.bottom < r1.top);
+  }
+  function anySubstantial(arr){
+    for(var i = 0; i < arr.length;i++){
+      if(arr[i] > minAccept){
+        return true;
+      }
+    }
+    return false;
+  }

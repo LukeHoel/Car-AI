@@ -1,5 +1,6 @@
 var canvas;
 var stage;
+var showFeelers = true;
 
 function handleTick(){
   cars.forEach(function(car){
@@ -25,6 +26,8 @@ function init() {
   createjs.Ticker.addEventListener("tick", handleTick);
   createjs.Ticker.framerate = 60;
 
+  //refresh feelers and hide them initially
+  toggleShowFeelers();
   stage.update();
 }
 

@@ -5,7 +5,7 @@ const carClass = {
   feelers : [],
   network : null, //the neural network controlling the actions,
   update: function(){
-    //this.checkCollision();
+    chooseAction(this);
     this.move();
   },
   move: function(){
@@ -24,8 +24,11 @@ const carClass = {
     this.vel += accelRate;
   },
   stop: function(){
-    if(this.vel > 0)
-    this.vel -= accelRate;
+    if(this.vel > 0){
+    this.vel -= accelRate*10;
+  }else{
+    vel = 0;
+  }
   },
   turnRight: function(){
     this.shape.rotation += turnSpeed;
@@ -53,8 +56,6 @@ const carClass = {
           var block = blocks[k];
 
           //collision detection
-
-
           var width = feelersWidth/feelersAmountX;
           var height = feelersHeight/feelersAmountY;
 
@@ -65,17 +66,19 @@ const carClass = {
           var rect2 = {left:block.x, right: block.x + blockSize,top:block.y, bottom:block.y+blockSize};
 
           var collide = intersectRect(rect1,rect2);
-          feeler.graphics.clear();
-          if(collide)
-          break;
+          if(collide){break;}
         }
-        if(collide){
-          feeler.graphics.beginFill("red").drawRect(0,0,feelersWidth / feelersAmountX, feelersHeight / feelersAmountY);
-        }else{
-          var checker = (i % 2 == 0) ? (j % 2 == 0) : !(j % 2 == 0);
-          feeler.graphics.beginFill(checker ? "cyan" : "blue").drawRect(0,0,feelersWidth / feelersAmountX, feelersHeight / feelersAmountY);
+        if(showFeelers){
+          feeler.graphics.clear();
+          if(collide){
+            feeler.graphics.beginFill("red").drawRect(0,0,feelersWidth / feelersAmountX, feelersHeight / feelersAmountY);
+          }else{
+            var checker = (i % 2 == 0) ? (j % 2 == 0) : !(j % 2 == 0);
+            feeler.graphics.beginFill(checker ? "cyan" : "blue").drawRect(0,0,feelersWidth / feelersAmountX, feelersHeight / feelersAmountY);
+          }
         }
         inputs.push(collide?1:0);
+
       }
     }
     return inputs;
@@ -93,8 +96,8 @@ const carClass = {
 var cars = [];
 var carWidth = 50;
 var carHeight = 100;
-var feelersAmountX = 10;
-var feelersAmountY = 13;
+var feelersAmountX = 5;
+var feelersAmountY = 7;
 var feelersWidth = 200;
 var feelersHeight = 300;
 var feelersAlpha = .2;
@@ -142,4 +145,15 @@ function addCar(x,y,angle){
   obj.setAngle(angle);
   cars.push(obj);
   return obj;
+}
+
+function toggleShowFeelers(){
+  showFeelers = !showFeelers;
+  cars.forEach(function(car){
+    for(var i = 0; i < car.feelers.length; i ++){
+      for(var j = 0; j < car.feelers[i].length; j ++){
+        car.feelers[i][j].graphics.clear();
+      }
+    }
+  });
 }
