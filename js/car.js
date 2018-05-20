@@ -4,6 +4,7 @@ const carClass = {
   feelers : [],
   network : null, //the neural network controlling the actions,
   update: function(){
+    this.checkCollision();
     this.move();
   },
   move: function(){
@@ -19,10 +20,54 @@ const carClass = {
     this.vel -= accelRate;
   },
   turnRight: function(){
-        this.shape.rotation += 1;
+    this.shape.rotation += turnSpeed;
+    for(var i = 0; i < this.feelers.length; i ++){
+      for(var j = 0; j < this.feelers[i].length; j ++){
+        this.feelers[i][j].rotation -= turnSpeed;
+      }
+    }
   },
   turnLeft: function(){
-        this.shape.rotation -= 1;
+    this.shape.rotation -= turnSpeed;
+    for(var i = 0; i < this.feelers.length; i ++){
+      for(var j = 0; j < this.feelers[i].length; j ++){
+        this.feelers[i][j].rotation += turnSpeed;
+      }
+    }
+  },
+  checkCollision: function(){
+
+    for(var i = 0; i < this.feelers.length; i ++){
+      for(var j = 0; j < this.feelers[i].length; j ++){
+        var feeler = this.feelers[i][j];
+        var collide = false;
+        for(var k = 0; k < blocks.length; k ++){
+          var block = blocks[k];
+
+          //collision detection
+
+          var point = this.shape.localToGlobal(feeler.x,feeler.y);
+
+          var width = feelersWidth/feelersAmountX;
+          var height = feelersHeight/feelersAmountY;
+
+          var rect1 = {left:point.x, right: point.x + width,top:point.y, bottom:point.y+height};
+
+          var rect2 = {left:block.x, right: block.x + blockSize,top:block.y, bottom:block.y+blockSize};
+
+          var collide = intersectRect(rect1,rect2);
+          feeler.graphics.clear();
+          if(collide)
+          break;
+        }
+        if(collide){
+          feeler.graphics.beginFill("red").drawRect(0,0,feelersWidth / feelersAmountX, feelersHeight / feelersAmountY);
+        }else{
+          var checker = (i % 2 == 0) ? (j % 2 == 0) : !(j % 2 == 0);
+          feeler.graphics.beginFill(checker ? "cyan" : "blue").drawRect(0,0,feelersWidth / feelersAmountX, feelersHeight / feelersAmountY);
+        }
+      }
+    }
   }
 }
 
@@ -30,11 +75,12 @@ var cars = [];
 var carWidth = 50;
 var carHeight = 100;
 var feelersAmountX = 10;
-var feelersAmountY = 15;
+var feelersAmountY = 10*1.3;
 var feelersWidth = 200;
-var feelersHeight =300;
+var feelersHeight = 300;
 var feelersAlpha = .2;
 
+var turnSpeed = 1;
 var accelRate = .1;
 var speedCap = 10;
 
@@ -56,13 +102,14 @@ function addCar(x,y){
       feelerX += (feelersWidth / feelersAmountX) * o;
       feelerY += (feelersHeight / feelersAmountY) * i;
       var feeler = new createjs.Shape();
-      feeler.x = feelerX;
-      feeler.y = feelerY;
+      feeler.x = feelerX + (feelersWidth / feelersAmountX)/2;
+      feeler.y = feelerY + (feelersHeight / feelersAmountY)/2;
       feeler.alpha = feelersAlpha;
       var checker = (i % 2 == 0) ? (o % 2 == 0) : !(o % 2 == 0);
 
       feeler.graphics.beginFill(checker ? "cyan" : "blue").drawRect(0,0,feelersWidth / feelersAmountX, feelersHeight / feelersAmountY);
-      feeler.setBounds(0,0,feelersWidth / feelersAmountX, feelersHeight / feelersAmountY);
+      feeler.regX = (feelersWidth / feelersAmountX)/2;
+      feeler.regY = (feelersHeight / feelersAmountY)/2;
       container.addChild(feeler);
       row.push(feeler);
     }
