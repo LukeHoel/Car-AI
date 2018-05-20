@@ -3,7 +3,6 @@ var stage;
 
 function handleTick(){
   cars.forEach(function(car){
-    //car.turnRight();
     car.update();
   });
   stage.update();
@@ -18,7 +17,10 @@ function init() {
 
   //stage setup
   stage = new createjs.Stage("canvas");
-  setUpTest(TEST_TYPE_STAY_ON_ROAD_LEFT);
+  setUpTest(TEST_TYPE_STAY_ON_ROAD);
+  document.getElementById("learning").innerHTML = "";
+  document.getElementById("buttons").style.display = "initial";
+  canvas.style.display = "initial";
   //game loop reference
   createjs.Ticker.addEventListener("tick", handleTick);
   createjs.Ticker.framerate = 60;

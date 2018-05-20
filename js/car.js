@@ -5,7 +5,7 @@ const carClass = {
   feelers : [],
   network : null, //the neural network controlling the actions,
   update: function(){
-    this.checkCollision();
+    //this.checkCollision();
     this.move();
   },
   move: function(){
@@ -46,7 +46,6 @@ const carClass = {
   checkCollision: function(){
     var inputs = [];
     for(var i = 0; i < this.feelers.length; i ++){
-      var inputsRow = [];
       for(var j = 0; j < this.feelers[i].length; j ++){
         var feeler = this.feelers[i][j];
         var collide = false;
@@ -76,9 +75,8 @@ const carClass = {
           var checker = (i % 2 == 0) ? (j % 2 == 0) : !(j % 2 == 0);
           feeler.graphics.beginFill(checker ? "cyan" : "blue").drawRect(0,0,feelersWidth / feelersAmountX, feelersHeight / feelersAmountY);
         }
-        inputsRow.push(collide?1:0);
+        inputs.push(collide?1:0);
       }
-      inputs.push(inputsRow);
     }
     return inputs;
   },
@@ -143,5 +141,5 @@ function addCar(x,y,angle){
 
   obj.setAngle(angle);
   cars.push(obj);
-  return car;
+  return obj;
 }
