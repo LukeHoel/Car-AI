@@ -20,12 +20,13 @@ function addBlockLine(startX, startY, amount, rise, run){
     addBlock(x,y);
   }
 }
-var trainingSteps = 20;
+var trainingSteps = 10;
 function setUpNetwork(){
   var network = new synaptic.Architect.Perceptron(feelersAmountX*feelersAmountY, 10, 10, 4);
   var trainer = new synaptic.Trainer(network)
-  addBlockLine(0,canvas.height, 100, -blockSize,blockSize);
-  addBlockLine(500,canvas.height, 100, -blockSize,blockSize);
+  var roadOffset = 500
+  addBlockLine(((canvas.width/2)-250)-roadOffset,(canvas.height/2)+roadOffset, 100, -blockSize,blockSize);
+  addBlockLine(((canvas.width/2)+250)-roadOffset,(canvas.height/2)+roadOffset, 100, -blockSize,blockSize);
   //left side of road
   var trainingSetLeftSide = [];
   for(var i = 0; i < trainingSteps; i ++){
@@ -39,6 +40,10 @@ function setUpNetwork(){
     stage.removeChild(car.shape);
     cars = [];
   }
+  blocks.forEach(function(block){
+    stage.removeChild(block);
+  });
+  blocks = [];
   trainer.train(trainingSetLeftSide);
   return network;
 }
@@ -49,10 +54,11 @@ function setUpTest(testType){
   blocks = [];
   switch(testType){
     case(TEST_TYPE_STAY_ON_ROAD):
-    addBlockLine(0,canvas.height, 100, -blockSize,blockSize);
-    addBlockLine(500,canvas.height, 100, -blockSize,blockSize);
     var car = addCar(canvas.width/2,canvas.height/2,30);//a litte skewed to the left
     car.network = setUpNetwork();
+    var roadOffset = 500
+    addBlockLine(((canvas.width/2)-250)-roadOffset,(canvas.height/2)+roadOffset, 100, -blockSize,blockSize);
+    addBlockLine(((canvas.width/2)+250)-roadOffset,(canvas.height/2)+roadOffset, 100, -blockSize,blockSize);
     cars.push(car);
   }
 }
