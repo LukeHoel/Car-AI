@@ -2,8 +2,7 @@ var blocks = [];
 var blockSize = 40;
 
 //test types
-var TEST_TYPE_STAY_ON_ROAD = 0;
-var TEST_TYPE_ROAD_NORMAL = 1;
+var TEST_TYPE_ROAD_NORMAL = 0;
 function addBlock(x,y,size){
   var block = new createjs.Shape();
   block.x = x;
@@ -26,16 +25,23 @@ var trainingSteps = 20;
 function setUpNetwork(){
   var network = new synaptic.Architect.Perceptron(feelersAmountX*feelersAmountY, 10, 10, 4);
   var trainer = new synaptic.Trainer(network)
-  var roadOffset = 800
-  addBlockLine(((canvas.width/2)-250)-roadOffset,(canvas.height/2)+roadOffset, 50, -blockSize,blockSize);
-  addBlockLine(((canvas.width/2)+250)-roadOffset,(canvas.height/2)+roadOffset, 50, -blockSize,blockSize);
+  var roadWidth = 250;
+  addBlock((canvas.width/2)-roadWidth,canvas.height-roadWidth, roadWidth);
+  addBlock((canvas.width/2),canvas.height-roadWidth, roadWidth);
+  for(var i = 2; i < 6; i ++){
+    addBlock((canvas.width/2)-roadWidth*2,canvas.height-roadWidth*i, roadWidth);
+    addBlock((canvas.width/2)+roadWidth,canvas.height-roadWidth*i, roadWidth);
+  }
+  addBlock((canvas.width/2)-roadWidth,canvas.height-roadWidth*6, roadWidth);
+  addBlock((canvas.width/2),canvas.height-roadWidth*6, roadWidth);
 
   var trainingSet = [];
   //left side of road
+  var offset = roadWidth - feelersWidth*.8;
   for(var i = 0; i < trainingSteps; i ++){
-    var offset = 50 + (Math.random() * 30) - 20;
+
     var angle = 45 + (Math.random() * 60) - 30;
-    var car = addCar((canvas.width/2)-offset,(canvas.height/2)-offset,angle);
+    var car = addCar((canvas.width/2)-offset,(canvas.height/2),-angle);
     var trainingInstance = {
       input: car.checkCollision(),
       output: [0,0,0,1]
@@ -47,9 +53,9 @@ function setUpNetwork(){
   }
   //right side of road
   for(var i = 0; i < trainingSteps; i ++){
-    var offset = 50 + (Math.random() * 30) - 20;
+
     var angle = 45 + (Math.random() * 60) - 30;
-    var car = addCar((canvas.width/2)+offset,(canvas.height/2)+offset,angle);
+    var car = addCar((canvas.width/2)+offset,(canvas.height/2),angle);
     var trainingInstance = {
       input: car.checkCollision(),
       output: [0,0,1,0]
@@ -74,10 +80,10 @@ function setUpNetwork(){
 
     trainingSet.push(trainingInstance);
   }
-
+  //stop
   for(var i = 0; i < trainingSteps; i ++){
-    var offset = 60 + (Math.random() * 30) - 20;
-    var angle = 90 + (Math.random() * 30) - 15;
+    var offset = roadWidth -50+ (Math.random() * 10) - 5;
+    var angle = 90 + (Math.random() * 10) - 5;
     var car = addCar((canvas.width/2)+offset,(canvas.height/2)+offset,angle);
     var trainingInstance = {
       input: car.checkCollision(),
@@ -100,10 +106,10 @@ function setUpNetwork(){
 }
 
 function exportStandalone(){
-    var network = setUpNetwork();
-    var standalone = network.standalone();
-    console.log(standalone.toString());
-    init();
+  var network = setUpNetwork();
+  var standalone = network.standalone();
+  console.log(standalone.toString().replace("function (input) {", "function standalone(input) {"));
+  init();
 }
 
 function setUpTest(testType){
@@ -112,25 +118,6 @@ function setUpTest(testType){
   });
   blocks = [];
   switch(testType){
-    case(TEST_TYPE_STAY_ON_ROAD):
-    var offset = 500;
-    var angle = 45 + Math.random() * 30;
-    var x = (canvas.width/2)-offset;
-    var y = (canvas.height/2)+offset;
-    var car = addCar(x,y,angle);//a litte skewed to the left
-    car.initX = x;
-    car.initY = y;
-    car.initAngle = angle;
-    car.network = setUpNetwork();
-    var roadOffset = 600;
-    addBlockLine(((canvas.width/2)-250)-roadOffset,(canvas.height/2)+roadOffset, 50, -blockSize,blockSize);
-    addBlockLine(((canvas.width/2)+250)-roadOffset,(canvas.height/2)+roadOffset, 50, -blockSize,blockSize);
-    var stopperOffset = 500;
-    addBlockLine(((canvas.width/2)+blockSize*10) + stopperOffset,(canvas.height/2)-stopperOffset, 10, -blockSize,-blockSize);
-
-    cars.push(car);
-    break;
-
     case(TEST_TYPE_ROAD_NORMAL):
     var roadWidth = 250;
     var x = canvas.width/2;
