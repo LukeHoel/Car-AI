@@ -38,8 +38,8 @@ function setUpNetwork(){
 
   var trainingSet = [];
   //left side of road
-  var offset = roadWidth - feelersWidth*.8;
-  for(var i = 0; i < trainingSteps; i ++){
+  var offset = roadWidth - feelersWidth*.9;
+  for(var i = 0; i < trainingSteps*2; i ++){
 
     var angle = 45 + (Math.random() * 60) - 30;
     var car = addCar((canvas.width/2)-offset,(canvas.height/2),-angle);
@@ -53,7 +53,7 @@ function setUpNetwork(){
     trainingSet.push(trainingInstance);
   }
   //right side of road
-  for(var i = 0; i < trainingSteps; i ++){
+  for(var i = 0; i < trainingSteps*2; i ++){
 
     var angle = 45 + (Math.random() * 60) - 30;
     var car = addCar((canvas.width/2)+offset,(canvas.height/2),angle);
@@ -89,6 +89,20 @@ function setUpNetwork(){
     var trainingInstance = {
       input: car.checkCollision(),
       output: [0,1,0,0]
+    }
+    stage.removeChild(car.shape);
+    cars = [];
+
+    trainingSet.push(trainingInstance);
+  }
+
+  for(var i = 0; i < trainingSteps; i ++){
+    var offset = roadWidth -50+ (Math.random() * 10) - 5;
+    var angle = 90 + (Math.random() * 10) - 5;
+    var car = addCar((canvas.width/2)+offset,(canvas.height/2)+offset,-angle);
+    var trainingInstance = {
+      input: car.checkCollision(),
+      output: [1,0,0,0]
     }
     stage.removeChild(car.shape);
     cars = [];
@@ -140,6 +154,7 @@ function setUpTest(testType){
     addBlock((canvas.width/2),canvas.height-roadWidth*6, roadWidth);
     cars.push(car);
     break;
+
     case(TEST_TYPE_CURVED_ROAD):
     var roadWidth = 250;
     var x = canvas.width/2;
@@ -150,6 +165,26 @@ function setUpTest(testType){
     car.initY = y;
     car.initAngle = angle;
     cars.push(car);
+    // addBlock((canvas.width/2)-roadWidth,canvas.height-roadWidth, roadWidth);
+    // addBlock((canvas.width/2),canvas.height-roadWidth, roadWidth);
+    // for(var i = 2; i < 3; i ++){
+    //   addBlock((canvas.width/2)-roadWidth*2,canvas.height-roadWidth*i, roadWidth);
+    //   addBlock((canvas.width/2)+roadWidth,canvas.height-roadWidth*i, roadWidth);
+    // }
+    var baseX = (canvas.width/2)+roadWidth;
+    var baseY = canvas.height-roadWidth*2;
+
+    var steps = 50;
+    var radius = 600;
+    var size = 100;
+    var length = 100;
+    for(var i = 0; i < steps; i ++){
+      var angle = (360/steps)*i;
+      debugger;
+      var x = baseX - (Math.sin(angle) * radius);
+      var y = baseY - (Math.cos(angle) * radius);
+      addBlock(x,y,size);
+    }
     break;
   }
 }

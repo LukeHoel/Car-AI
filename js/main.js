@@ -36,7 +36,7 @@ function init(testType) {
 
   //refresh feelers and hide them initially
   showFeelers = true;
-  toggleShowFeelers();
+  toggleShowFeelers(TEST_TYPE_BOX);
   stage.update();
 }
 
