@@ -107,7 +107,7 @@ var feelersAlpha = .2;
 
 var turnSpeed = 1;
 var accelRate = .1;
-var speedCap = 10;
+var speedCap = 5;
 
 function addCar(x,y,angle){
   var obj = Object.assign({}, carClass);

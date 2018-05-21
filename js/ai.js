@@ -22,7 +22,7 @@ function addBlockLine(startX, startY, amount, rise, run){
     addBlock(x,y,blockSize);
   }
 }
-var trainingSteps = 10;
+var trainingSteps = 20;
 function setUpNetwork(){
   var network = new synaptic.Architect.Perceptron(feelersAmountX*feelersAmountY, 10, 10, 4);
   var trainer = new synaptic.Trainer(network)
@@ -33,7 +33,7 @@ function setUpNetwork(){
   var trainingSet = [];
   //left side of road
   for(var i = 0; i < trainingSteps; i ++){
-    var offset = 50 + (Math.random() * 30) - 15;
+    var offset = 50 + (Math.random() * 30) - 20;
     var angle = 45 + (Math.random() * 60) - 30;
     var car = addCar((canvas.width/2)-offset,(canvas.height/2)-offset,angle);
     var trainingInstance = {
@@ -47,7 +47,7 @@ function setUpNetwork(){
   }
   //right side of road
   for(var i = 0; i < trainingSteps; i ++){
-    var offset = 50 + (Math.random() * 30) - 15;
+    var offset = 50 + (Math.random() * 30) - 20;
     var angle = 45 + (Math.random() * 60) - 30;
     var car = addCar((canvas.width/2)+offset,(canvas.height/2)+offset,angle);
     var trainingInstance = {
@@ -76,7 +76,7 @@ function setUpNetwork(){
   }
 
   for(var i = 0; i < trainingSteps; i ++){
-    var offset = 50 + (Math.random() * 30) - 20;
+    var offset = 60 + (Math.random() * 30) - 20;
     var angle = 90 + (Math.random() * 30) - 15;
     var car = addCar((canvas.width/2)+offset,(canvas.height/2)+offset,angle);
     var trainingInstance = {
