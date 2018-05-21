@@ -4,6 +4,7 @@ var blockSize = 40;
 //test types
 var TEST_TYPE_BOX = 0;
 var TEST_TYPE_CURVED_ROAD = 1;
+var TEST_TYPE_SIN_WAVE = 2;
 function addBlock(x,y,size){
   var block = new createjs.Shape();
   block.x = x;
@@ -38,11 +39,12 @@ function setUpNetwork(){
 
   var trainingSet = [];
   //left side of road
-  var offset = roadWidth - feelersWidth*.9;
-  for(var i = 0; i < trainingSteps*2; i ++){
+  var offset = roadWidth - feelersWidth*.7;
+  var offset2 = roadWidth - feelersWidth*.9;
+  for(var i = 0; i < trainingSteps; i ++){
 
     var angle = 45 + (Math.random() * 60) - 30;
-    var car = addCar((canvas.width/2)-offset,(canvas.height/2),-angle);
+    var car = addCar((canvas.width/2)-(i%2 == 0 ? offset : offset2),(canvas.height/2),-angle);
     var trainingInstance = {
       input: car.checkCollision(),
       output: [0,0,0,1]
@@ -53,10 +55,10 @@ function setUpNetwork(){
     trainingSet.push(trainingInstance);
   }
   //right side of road
-  for(var i = 0; i < trainingSteps*2; i ++){
+  for(var i = 0; i < trainingSteps; i ++){
 
     var angle = 45 + (Math.random() * 60) - 30;
-    var car = addCar((canvas.width/2)+offset,(canvas.height/2),angle);
+    var car = addCar((canvas.width/2)+(i%2 == 0 ? offset : offset2),(canvas.height/2),angle);
     var trainingInstance = {
       input: car.checkCollision(),
       output: [0,0,1,0]
@@ -165,12 +167,6 @@ function setUpTest(testType){
     car.initY = y;
     car.initAngle = angle;
     cars.push(car);
-    // addBlock((canvas.width/2)-roadWidth,canvas.height-roadWidth, roadWidth);
-    // addBlock((canvas.width/2),canvas.height-roadWidth, roadWidth);
-    // for(var i = 2; i < 3; i ++){
-    //   addBlock((canvas.width/2)-roadWidth*2,canvas.height-roadWidth*i, roadWidth);
-    //   addBlock((canvas.width/2)+roadWidth,canvas.height-roadWidth*i, roadWidth);
-    // }
     var baseX = (canvas.width/2)+roadWidth;
     var baseY = canvas.height-roadWidth*2;
 
@@ -184,6 +180,34 @@ function setUpTest(testType){
       var x = baseX - (Math.sin(angle) * radius);
       var y = baseY - (Math.cos(angle) * radius);
       addBlock(x,y,size);
+    }
+    break;
+    case(TEST_TYPE_SIN_WAVE):
+    var roadWidth = 250;
+    var x = canvas.width/2;
+    var y = canvas.height/2;
+    var angle = Math.random()*360;
+    var car = addCar(x,y,angle);
+    car.initX = x;
+    car.initY = y;
+    car.initAngle = angle;
+    cars.push(car);
+
+    var baseX = 0;
+    var baseY = canvas.height/2;
+
+    var steps = 50;
+    var radius = 100;
+    var run = 100;
+    var size = 100
+    var spacing = 220;
+    for(var i = 0; i < steps; i ++){
+      var up = Math.sin(i)*radius;
+      var x = baseX + i * run;
+      var y = baseY + up;
+
+      addBlock(x,y+spacing,size);
+      addBlock(x,y-spacing,size);
     }
     break;
   }
