@@ -33,7 +33,7 @@ function setUpNetwork(){
   var trainingSet = [];
   //left side of road
   for(var i = 0; i < trainingSteps; i ++){
-    var offset = 50 + (Math.random() * 30) - 20;
+    var offset = 50 + (Math.random() * 30) - 15;
     var angle = 45 + (Math.random() * 60) - 30;
     var car = addCar((canvas.width/2)-offset,(canvas.height/2)-offset,angle);
     var trainingInstance = {
@@ -47,7 +47,7 @@ function setUpNetwork(){
   }
   //right side of road
   for(var i = 0; i < trainingSteps; i ++){
-    var offset = 50 + (Math.random() * 30) - 20;
+    var offset = 50 + (Math.random() * 30) - 15;
     var angle = 45 + (Math.random() * 60) - 30;
     var car = addCar((canvas.width/2)+offset,(canvas.height/2)+offset,angle);
     var trainingInstance = {
@@ -98,6 +98,14 @@ function setUpNetwork(){
   trainer.train(trainingSet);
   return network;
 }
+
+function exportStandalone(){
+    var network = setUpNetwork();
+    var standalone = network.standalone();
+    console.log(standalone.toString());
+    init();
+}
+
 function setUpTest(testType){
   blocks.forEach(function(block){
     stage.removeChild(block);
@@ -124,15 +132,16 @@ function setUpTest(testType){
     break;
 
     case(TEST_TYPE_ROAD_NORMAL):
-        var roadWidth = 250;
+    var roadWidth = 250;
     var x = canvas.width/2;
     var y = canvas.height-carHeight - roadWidth*2;
-    var angle = (Math.random()*40)-20;
+    var angle = Math.random()*360;
     var car = addCar(x,y,angle);
     car.initX = x;
     car.initY = y;
     car.initAngle = angle;
-    car.network = setUpNetwork();
+    //car.network = setUpNetwork();
+    //car.network = standalone();
     addBlock((canvas.width/2)-roadWidth,canvas.height-roadWidth, roadWidth);
     addBlock((canvas.width/2),canvas.height-roadWidth, roadWidth);
     for(var i = 2; i < 6; i ++){
@@ -148,7 +157,8 @@ function setUpTest(testType){
 var minAccept = .5;
 function chooseAction(car){
   var input = car.checkCollision();
-  var output = car.network.activate(input);
+  //var output = car.network.activate(input);
+  var output = standalone(input);
   if(anySubstantial(output)){
 
     highestIndex = 0;

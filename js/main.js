@@ -52,6 +52,6 @@ function reset(){
     car.vel = 0;
     car.shape.x = car.initX;
     car.shape.y = car.initY;
-    car.setAngle((Math.random()*40)-20);
+    car.setAngle(Math.random()*360);
   });
 }
