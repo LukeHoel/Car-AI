@@ -21,7 +21,7 @@
 </head>
 <body>
 
-  <body onload="init();" style="margin:0px;overflow: hidden;display:flex;"onresize="resize()">
+  <body onload="init(TEST_TYPE_BOX);" style="margin:0px;overflow: hidden;display:flex;"onresize="resize()">
     <div id="learning">Learning...</div>
     <canvas id="canvas" style="background-color:darkgrey;display:none;"></canvas>
     <div id="buttons"style="width:30%;margin:10px;display:none;">
@@ -36,6 +36,11 @@
       -
       <br>
       <button onclick="exportStandalone()">Print new standalone function to console</button>
+      <br>
+      -
+      <br>
+      <button onclick="init(TEST_TYPE_BOX)">Test 1 : Box</button>
+      <button onclick="init(TEST_TYPE_CURVED_ROAD)">Test 2 : Curved Road</button>
     </div>
   </body>
 

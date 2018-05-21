@@ -2,7 +2,8 @@ var blocks = [];
 var blockSize = 40;
 
 //test types
-var TEST_TYPE_ROAD_NORMAL = 0;
+var TEST_TYPE_BOX = 0;
+var TEST_TYPE_CURVED_ROAD = 1;
 function addBlock(x,y,size){
   var block = new createjs.Shape();
   block.x = x;
@@ -118,7 +119,7 @@ function setUpTest(testType){
   });
   blocks = [];
   switch(testType){
-    case(TEST_TYPE_ROAD_NORMAL):
+    case(TEST_TYPE_BOX):
     var roadWidth = 250;
     var x = canvas.width/2;
     var y = canvas.height-carHeight - roadWidth*2;
@@ -127,16 +128,27 @@ function setUpTest(testType){
     car.initX = x;
     car.initY = y;
     car.initAngle = angle;
-    //car.network = setUpNetwork();
-    //car.network = standalone();
+
     addBlock((canvas.width/2)-roadWidth,canvas.height-roadWidth, roadWidth);
     addBlock((canvas.width/2),canvas.height-roadWidth, roadWidth);
     for(var i = 2; i < 6; i ++){
       addBlock((canvas.width/2)-roadWidth*2,canvas.height-roadWidth*i, roadWidth);
       addBlock((canvas.width/2)+roadWidth,canvas.height-roadWidth*i, roadWidth);
     }
+
     addBlock((canvas.width/2)-roadWidth,canvas.height-roadWidth*6, roadWidth);
     addBlock((canvas.width/2),canvas.height-roadWidth*6, roadWidth);
+    cars.push(car);
+    break;
+    case(TEST_TYPE_CURVED_ROAD):
+    var roadWidth = 250;
+    var x = canvas.width/2;
+    var y = canvas.height-carHeight - roadWidth*2;
+    var angle = Math.random()*360;
+    var car = addCar(x,y,angle);
+    car.initX = x;
+    car.initY = y;
+    car.initAngle = angle;
     cars.push(car);
     break;
   }

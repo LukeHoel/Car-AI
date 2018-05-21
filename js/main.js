@@ -15,7 +15,9 @@ function resize(){
   canvas.style.width = (canvas.width / 2) + "px";
   canvas.style.height = (canvas.height / 2) + "px";
 }
-function init() {
+function init(testType) {
+  cars = [];
+  blocks = [];
   canvas = document.getElementById("canvas");
   canvas.width  = (window.innerWidth*.7)*2;
   canvas.height = (window.innerHeight)*2;
@@ -24,7 +26,7 @@ function init() {
 
   //stage setup
   stage = new createjs.Stage("canvas");
-  setUpTest(TEST_TYPE_ROAD_NORMAL);
+  setUpTest(testType);
   document.getElementById("learning").innerHTML = "";
   document.getElementById("buttons").style.display = "initial";
   canvas.style.display = "initial";
@@ -33,6 +35,7 @@ function init() {
   createjs.Ticker.framerate = 60;
 
   //refresh feelers and hide them initially
+  showFeelers = true;
   toggleShowFeelers();
   stage.update();
 }
