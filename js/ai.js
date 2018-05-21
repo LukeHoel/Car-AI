@@ -3,21 +3,23 @@ var blockSize = 40;
 
 //test types
 var TEST_TYPE_STAY_ON_ROAD = 0;
-var TEST_TYPE_STAY_ON_ROAD_RIGHT = 1;
-var TEST_TYPE_STAY_ON_ROAD_LEFT = 2;
-function addBlock(x,y){
+var TEST_TYPE_ROAD_NORMAL = 1;
+function addBlock(x,y,size){
   var block = new createjs.Shape();
   block.x = x;
   block.y = y;
-  block.graphics.beginFill("white").drawRect(0,0,blockSize,blockSize);
-  blocks.push(block);
+  block.graphics.beginFill("white").drawRect(0,0,size,size);
+  blocks.push({
+    size:size,
+    shape:block
+  });
   stage.addChild(block);
 }
 function addBlockLine(startX, startY, amount, rise, run){
   for(var i = 0; i < amount; i ++){
     var x = startX + (run * i);
     var y = startY + (rise * i);
-    addBlock(x,y);
+    addBlock(x,y,blockSize);
   }
 }
 var trainingSteps = 10;
@@ -90,7 +92,7 @@ function setUpNetwork(){
 
 
   blocks.forEach(function(block){
-    stage.removeChild(block);
+    stage.removeChild(block.shape);
   });
   blocks = [];
   trainer.train(trainingSet);
@@ -119,6 +121,28 @@ function setUpTest(testType){
     addBlockLine(((canvas.width/2)+blockSize*10) + stopperOffset,(canvas.height/2)-stopperOffset, 10, -blockSize,-blockSize);
 
     cars.push(car);
+    break;
+
+    case(TEST_TYPE_ROAD_NORMAL):
+        var roadWidth = 250;
+    var x = canvas.width/2;
+    var y = canvas.height-carHeight - roadWidth*2;
+    var angle = (Math.random()*40)-20;
+    var car = addCar(x,y,angle);
+    car.initX = x;
+    car.initY = y;
+    car.initAngle = angle;
+    car.network = setUpNetwork();
+    addBlock((canvas.width/2)-roadWidth,canvas.height-roadWidth, roadWidth);
+    addBlock((canvas.width/2),canvas.height-roadWidth, roadWidth);
+    for(var i = 2; i < 6; i ++){
+      addBlock((canvas.width/2)-roadWidth*2,canvas.height-roadWidth*i, roadWidth);
+      addBlock((canvas.width/2)+roadWidth,canvas.height-roadWidth*i, roadWidth);
+    }
+    addBlock((canvas.width/2)-roadWidth,canvas.height-roadWidth*6, roadWidth);
+    addBlock((canvas.width/2),canvas.height-roadWidth*6, roadWidth);
+    cars.push(car);
+    break;
   }
 }
 var minAccept = .5;

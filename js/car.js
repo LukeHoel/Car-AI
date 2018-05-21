@@ -66,7 +66,7 @@ const carClass = {
 
           var rect1 = {left:point.x, right: point.x + width,top:point.y, bottom:point.y+height};
 
-          var rect2 = {left:block.x, right: block.x + blockSize,top:block.y, bottom:block.y+blockSize};
+          var rect2 = {left:block.shape.x, right: block.shape.x + block.size,top:block.shape.y, bottom:block.shape.y+block.size};
 
           var collide = intersectRect(rect1,rect2);
           if(collide){break;}

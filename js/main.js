@@ -7,8 +7,14 @@ function handleTick(){
     car.update();
   });
   stage.update();
-}
 
+}
+function resize(){
+  canvas.width  = (window.innerWidth*.7)*2;
+  canvas.height = (window.innerHeight)*2;
+  canvas.style.width = (canvas.width / 2) + "px";
+  canvas.style.height = (canvas.height / 2) + "px";
+}
 function init() {
   canvas = document.getElementById("canvas");
   canvas.width  = (window.innerWidth*.7)*2;
@@ -18,7 +24,7 @@ function init() {
 
   //stage setup
   stage = new createjs.Stage("canvas");
-  setUpTest(TEST_TYPE_STAY_ON_ROAD);
+  setUpTest(TEST_TYPE_ROAD_NORMAL);
   document.getElementById("learning").innerHTML = "";
   document.getElementById("buttons").style.display = "initial";
   canvas.style.display = "initial";
@@ -43,8 +49,9 @@ function stop(){
 }
 function reset(){
   cars.forEach(function(car){
+    car.vel = 0;
     car.shape.x = car.initX;
     car.shape.y = car.initY;
-    car.setAngle(car.initAngle);
+    car.setAngle((Math.random()*40)-20);
   });
 }
