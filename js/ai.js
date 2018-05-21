@@ -85,7 +85,7 @@ function setUpNetwork(){
   }
   //stop
   for(var i = 0; i < trainingSteps; i ++){
-    var offset = roadWidth -50+ (Math.random() * 10) - 5;
+    var offset = roadWidth -30+ (Math.random() * 10) - 5;
     var angle = 90 + (Math.random() * 10) - 5;
     var car = addCar((canvas.width/2)+offset,(canvas.height/2)+offset,angle);
     var trainingInstance = {
@@ -99,7 +99,7 @@ function setUpNetwork(){
   }
 
   for(var i = 0; i < trainingSteps; i ++){
-    var offset = roadWidth -50+ (Math.random() * 10) - 5;
+    var offset = roadWidth -30+ (Math.random() * 10) - 5;
     var angle = 90 + (Math.random() * 10) - 5;
     var car = addCar((canvas.width/2)+offset,(canvas.height/2)+offset,-angle);
     var trainingInstance = {
